@@ -80,6 +80,9 @@ class PomodoroViewModel(application: Application) : AndroidViewModel(application
     private val _progress = MutableLiveData(0f)
     val progress: LiveData<Float> = _progress
 
+    private val _completedPomodoros = MutableLiveData(0)
+    val completedPomodoros: LiveData<Int> = _completedPomodoros
+
     // Variables de control del temporizador
     private var countDownTimer: CountDownTimer? = null
     private var totalTimeInMillis: Long = focusDurationMillis
@@ -156,7 +159,10 @@ class PomodoroViewModel(application: Application) : AndroidViewModel(application
                 updateWidgetData()
 
                 when (_currentPhase.value) {
-                    Phase.FOCUS -> startBreakSession()
+                    Phase.FOCUS -> {
+                        _completedPomodoros.value = (_completedPomodoros.value ?: 0) + 1
+                        startBreakSession()
+                    }
                     Phase.BREAK -> startFocusSession()
                     null -> {}
                 }

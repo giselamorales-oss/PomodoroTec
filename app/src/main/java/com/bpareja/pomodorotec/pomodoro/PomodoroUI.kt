@@ -63,7 +63,8 @@ fun PomodoroScreen(viewModel: PomodoroViewModel = viewModel()) {
     val currentPhase by viewModel.currentPhase.observeAsState(Phase.FOCUS) // Fase actual (FOCUS/BREAK)
     val isSkipBreakButtonVisible by viewModel.isSkipBreakButtonVisible.observeAsState(false) // Visibilidad del botón saltar
     var isDarkTheme by remember { mutableStateOf(false) }             // Control del tema oscuro
-    val progress by viewModel.progress.observeAsState(0f)             // Progreso de la barra (0f a 1f)
+    val progress by viewModel.progress.observeAsState(0f)
+    val completedPomodoros by viewModel.completedPomodoros.observeAsState(0)             // Progreso de la barra (0f a 1f)
 
     // Contenedor principal con tema
     PomodoroTecTheme(darkTheme = isDarkTheme) {
@@ -185,6 +186,15 @@ fun PomodoroScreen(viewModel: PomodoroViewModel = viewModel()) {
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Pomodoros completados: $completedPomodoros",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+
                 AnimatedWave(
                     color = if (currentPhase == Phase.FOCUS) Color(0xFFB22222) else Color(0xFF2E8B57),
                     modifier = Modifier
